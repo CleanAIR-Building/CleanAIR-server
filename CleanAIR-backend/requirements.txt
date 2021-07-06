@@ -1,0 +1,4 @@
+paho-mqtt==1.5.1
+SQLAlchemy==1.4.18
+sqlalchemy-utils==0.37.7
+testcontainers[postgresql]==3.4.1

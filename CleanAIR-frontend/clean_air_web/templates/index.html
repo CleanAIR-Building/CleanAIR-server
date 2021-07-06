@@ -1,0 +1,50 @@
+{% load static %}
+<html>
+<head>
+    <title>CleanAIR HOME</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to your CleanAIR Building!</h1>
+        <p>The current time is {{ now }}</p>
+    </header>
+    <div class="container">
+        <div id="summary">
+            <div id="entry-state" class="summary-field">
+                <p>The building is <br/>currently {{ entry }}!</p>
+            </div>
+            <div id="traffic-light" class="summary-field">
+                <div class="bulb {{ red }}"></div>
+                <div class="bulb {{ green }}"></div>
+            </div>
+            <div id="window-state" class="summary-field">
+                <p>The window is <br/>currently {{ window }}!</p>
+                {% with 'window_'|add:window|add:'.png' as image_src %}
+                <img src="{% static image_src %}" />
+                {% endwith %}
+            </div>
+            <div id="visitor-state" class="summary-field">
+                <p>There are currently <br/> {{ visitors }} <br/>guests in the building.</p>
+            </div>
+        </div>
+        <div id="window_open_plot" class="plot">
+            {{ window_open_plot|safe }}
+        </div>
+        <div id="airquality_plot" class="plot">
+            {{ airquality_plot|safe }}
+        </div>
+        <div id="visitors_plot" class="plot">
+            {{ visitors_plot|safe }}
+        </div>
+    </div>
+    <footer>
+        <hr/>
+        <p><i>&copy Christian Schreiner, David Stürner, Daniel Wetzel <br/>
+        Universtity of Stuttgart - Student Project - Lecture: Smart Cities and Internet of Things <br/>
+        <a href="https://github.com/Code-Schwabe/sciot">Open Source @ GitHub</a>
+        </i></p>
+    </footer>
+</body>
+</html>

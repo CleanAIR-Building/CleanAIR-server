@@ -1,0 +1,67 @@
+header{
+    padding-left: 15%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    align-items: center;
+    background-color: #e5ecf6;
+    color: #3744ff;
+}
+#traffic-light {
+    height: 190px;
+    width: 100px;
+    background-color: #333;
+    border-radius: 20px;
+    margin: 15px 0;
+    padding: 10px;
+}
+#entry-state{
+    padding: 80px 25px 0 100px;
+}
+.summary-field p {
+    font-size: x-large;
+    text-align: center;
+}
+#window-state{
+    display: inline-block;
+    padding: 0 0 0 50px;
+    width: 300px;
+}
+#window-state img{
+    width: 100px;    
+    margin-left: 100px;
+}
+#visitor-state{
+    display: inline-block;
+    padding: 50px 0 0 50px;
+}
+.summary-field{
+    float: left;
+}
+.bulb {
+    height: 75px;
+    width: 75px;
+    background-color: #111;
+    border-radius: 50%;
+    margin: 12px auto;    
+}
+.bulb.red{
+    background-color: red;
+}
+.bulb.green{
+    background-color: rgb(158, 250, 19);
+}
+p {
+    font-family: sans-serif;
+}
+.container{
+    width: 80%;
+    margin-left: 10%;
+}
+.plot{
+    align-items: center;
+    height: 400px;
+    clear: both;
+}
+footer p{
+    text-align: center;
+}
