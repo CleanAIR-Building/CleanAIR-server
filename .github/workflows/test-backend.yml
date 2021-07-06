@@ -1,0 +1,39 @@
+name: Backend tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: CleanAIR-backend
+      python-version: 3.9.5
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ env.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.python-version }}
+
+      - name: Create virtual environment
+        uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
+        with:
+          requirement_files: ${{ env.working-directory }}/requirements.txt
+
+      - name: Check cache
+        uses: syphar/restore-pip-download-cache@v1
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+        working-directory: ${{ env.working-directory }}
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - name: unittest
+        working-directory: ${{ env.working-directory }}/clean_air_backend
+        run: |
+          ls
+          python -m unittest -v
