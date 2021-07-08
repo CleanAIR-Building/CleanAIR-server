@@ -2,6 +2,7 @@ from data_processing.consumers.consumer import Consumer
 import logging
 import paho.mqtt.client as mqtt
 import json
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -18,19 +19,29 @@ class MQTTClient:
         self.user = user
         self.password = password
         self.keepalive: int = keepalive
+        self.consumers: list = consumers
         self.client: mqtt.Client = mqtt.Client(self.client_name)
         self.client.username_pw_set(self.user, self.password)
-        self.consumers: list = consumers
-        # self.client.on_message = lambda client, userdata, msg: self.consumers[msg.topic].consume(msg)
-        self.client.on_connect = lambda client, userdata, flags, rc: print("Connected With Result Code: {}".format(rc))
+        self.client.reconnect_delay_set(min_delay=1, max_delay=5)
+        self.client.on_connect = lambda client, userdata, flags, rc: print(
+            "Connected With Result Code: {}".format(rc))
         self.client.on_message = lambda client, userdata, msg: logger.info("Received {msg} from topic: {topic}",
-                                                                           msg=msg.payload.decode("utf-8"),
+                                                                           msg=msg.payload.decode(
+                                                                               "utf-8"),
                                                                            topic=msg.topic)
 
     def connect(self):
-        self.client.connect(self.host, port=self.port, keepalive=self.keepalive)
-        for consumer in self.consumers:
-            self.client.subscribe(consumer.topic)
+        while True:
+            try:
+                self.client.connect(self.host,
+                                    port=self.port,
+                                    keepalive=self.keepalive)
+                for consumer in self.consumers:
+                    self.client.subscribe(consumer.topic)
+                return
+            except Exception:
+                print(".", end='', flush=True)
+                time.sleep(1)
 
     def publish(self, topic: str, payload: dict):
         self.client.publish(topic, json.dumps(payload))
